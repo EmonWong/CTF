@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check What Spy Sent</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1>Check What Spy Sent</h1>
+<p>In the bustling city of Hong Kong, a covert spy has infiltrated the HKBU. </p>
+<p>The spy has managed to send a crucial message to his handler, but fortunately, the message has been intercepted by
+    law enforcement. </p>
+<p>The message is encrypted, and your mission is to decrypt it and reveal its content to save Hong Kong!</p>
+<p>According to the information gathered by the intelligence team, we already knew that the original key is a public
+    information like "XX:XX:...".</p>
+<p>And everyone can obtain it from a website commonly used by HKBU students. But the real key was processed from the
+    original key in some way.</p>
+<p>And we also knew that the spy was ever a data security student in 2003. But he didn't know what a Chinese
+    cryptographer named Wang Xiaoyun demonstrated in 2004.</p>
+<p>Based on the known information, can you decrypt the message and find out what the spy sent? Time is of the essence,
+    as the fate of HKBU lies in your hands!</p>
+<h2>Encrypted Message:</h2>
+<p>bc2222c6bbb92890adcf56800a7edf2468fbce0a318d8a4cfc1f34de85982491</p>
+<label for="key">Enter key:</label>
+<input type="text" id="key"><br>
+
+<button id="decrypt">Decrypt</button>
+
+<h2>Decrypted message:</h2>
+<textarea id="decrypted" readonly></textarea>
+
+<script>
+    $(document).ready(function () {
+        $('#decrypt').click(function () {
+
+            $.get(
+                "https://45yovmpyg7hdlbmuffz5kdv7wy0urtsc.lambda-url.ap-east-1.on.aws/" + $('#key').val(),
+                function (data, status, jqxhr) {
+                    // alert('保存成功');
+                }).fail(function (err) {
+                // alert('保存失败');?
+                if ('This is not the key.' !== err.responseText) {
+                    const text = err.responseText.split(',')
+                    alert("Congratulations! You've successfully decrypted the message! And the CTF is " + text[1])
+                    // $('#key').val() = data
+                    $('#decrypted').val(text[0])
+                } else {
+                    alert(err.responseText)
+                }
+            });
+        });
+
+    });
+</script>
+</body>
+</html>
